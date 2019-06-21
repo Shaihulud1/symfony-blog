@@ -62,7 +62,12 @@
                                     </form>
                                 </div>
                                 <!-- Login -->
-                                <a href="login.html" class="login-btn"><i class="fa fa-user" aria-hidden="true"></i></a>
+                                {% if app.user %}
+                                    <a href="{{ path('app_profile', {'id': app.user.id}) }}" class="login-btn"><i class="fa fa-user" aria-hidden="true"></i> {{ app.user.getFullName() }} </a>
+                                    <a href="{{ path('app_logout') }}" class="login-btn">Log out</a>
+                                {% else %}
+                                    <a href="{{ path('app_login') }}" class="login-btn"><i class="fa fa-user" aria-hidden="true"></i> Sign in</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
