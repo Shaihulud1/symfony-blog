@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Panel{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 admin-item">
+            {# <a href="{{ path('category_index') }}">Categories</a> #}
+        </div>
+        <div class="col-md-12 admin-item">
+            <a href="{{ path('article_index') }}">Articles</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

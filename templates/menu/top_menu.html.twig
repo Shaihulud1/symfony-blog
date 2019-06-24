@@ -1,0 +1,45 @@
+<div class="vizew-main-menu" id="sticker">
+    <div class="classy-nav-container breakpoint-off">
+        <div class="container">
+
+            <!-- Menu -->
+            <nav class="classy-navbar justify-content-between" id="vizewNav">
+
+                <!-- Nav brand -->
+                <a href="/" class="nav-brand"><img src="img/core-img/logo.png" alt=""></a>
+
+                <!-- Navbar Toggler -->
+                <div class="classy-navbar-toggler">
+                    <span class="navbarToggler"><span></span><span></span><span></span></span>
+                </div>
+
+                <div class="classy-menu">
+
+                    <!-- Close Button -->
+                    <div class="classycloseIcon">
+                        <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                    </div>
+
+                    <!-- Nav Start -->
+                    <div class="classynav">
+                        <ul>
+                            {% for mItem in item.children %}
+                                <li class="active">
+                                    <a href="{{mItem.uri}}">{{mItem.name}}</a>
+                                    {% if mItem.children %}
+                                        <ul class="dropdown">
+                                            {% for menuChild in mItem.children %}
+                                                <li><a href="{{menuChild.uri}}">{{menuChild.name}}</a></li>
+                                            {% endfor %}
+                                        </ul>                                
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <!-- Nav End -->
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
