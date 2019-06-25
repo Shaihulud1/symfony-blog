@@ -14,3 +14,9 @@ framework:
     #fragments: true
     php_errors:
         log: true
+
+    cache:
+        pools:
+            my_cache_name:
+                adapter: cache.adapter.filesystem
+                default_lifetime: 10000

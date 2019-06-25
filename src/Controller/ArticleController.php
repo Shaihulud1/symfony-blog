@@ -9,18 +9,42 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Doctrine\ORM\EntityManager;
+use App\Entity\ArticleCategory;
+use App\Repository\ArticleCategoryRepository;
 
 class ArticleController extends AbstractController
 {
 
     /**
-     * @Route("/article/{catCode}", name="app_cat_detail")
+     * @Route("/latest", name="app_article_latest")
      */
-    public function catdetail($id)
+    public function latestArticles()
     {
         return $this->render('profile/index.html.twig', []);
     }
+
+    /**
+     * @Route("/article/{catCode}", name="app_cat_detail")
+     */
+    public function catdetail($catCode, ArticleCategoryRepository $articleCategoryRepository)
+    {
+        $categoryData = $articleCategoryRepository->findOneByCode($catCode);
+
+        return $this->render('article/article_list.html.twig', ['categoryData' => $categoryData]);
+    }
+
+    /**
+     * @Route("/article/{catCode}/{articleCode}", name="app_article_detail")
+     */
+    public function articledetail($catCode, $articleCode, ArticleRepository $articleRepository)
+    {
+        
+        $articleData = $articleRepository->findOneByCode($catCode);
+
+        return true;
+    }
+    
 
     /**
      * @Route("/admin/article", name="article_index", methods={"GET"})

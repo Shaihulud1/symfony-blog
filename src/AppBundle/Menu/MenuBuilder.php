@@ -7,21 +7,21 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use App\Entity\ArticleCategory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class MenuBuilder
 {
     private $factory;
     private $em;
     private $cache;
-
     /**
      * @param FactoryInterface $factory
      */
-    public function __construct(FactoryInterface $factory, EntityManagerInterface $em, AdapterInterface $cache)
+    public function __construct(FactoryInterface $factory, EntityManagerInterface $em)
     {
         $this->factory = $factory;
         $this->em = $em;
-        $this->cache = $cache;
+        $this->cache = new FilesystemAdapter();
     }
 
     private function getCategories()
@@ -34,13 +34,12 @@ class MenuBuilder
     public function createMainMenu(RequestStack $requestStack)
     {
         $cacheId = "top_menu";
-        $item = $this->cache->getItem($cacheId);
-        if (!$item->isHit()) {
+        $cachedMenu = $this->cache->getItem($cacheId);
+        if (!$cachedMenu->isHit()){
             $categories = $this->getCategories();
             $menu = $this->factory->createItem('root');
             $menu->addChild('Home', ['route' => 'app_home']);
-            $menu->addChild('Latest');
-            $menu->addChild('Latest');
+            $menu->addChild('Latest', ['route' => 'app_article_latest']);
             $cat = $menu->addChild('Categories');
             if (!empty($categories)) {
                 foreach ($categories as $catData) {
@@ -55,12 +54,10 @@ class MenuBuilder
                     );
                 }
             }
-            $content = $menu;
-            $item->set($content);
-            $this->cache->save($item);
+            $cachedMenu->set($menu);
+            $this->cache->save($cachedMenu);
         }
-        $menu = $item->get();
-
+        $menu = $cachedMenu->get($cacheId);
         return $menu;
     }
 
